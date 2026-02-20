@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AP Training Simulator – Train AP Staff Safely</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+    :root {
+      --bg: #0b1020;
+      --bg-alt: #111729;
+      --card: #151b2f;
+      --accent: #4f8cff;
+      --accent-soft: rgba(79, 140, 255, 0.12);
+      --text: #f5f7ff;
+      --muted: #f5f7ff;
+      --border: #252b43;
+      --danger: #ff6b6b;
+      --success: #4fd18b;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 90% 0%, #7dd3fc 0%, #020617 95%);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 20%, #7dd3fc, #4f46e5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #e5f0ff;
+      box-shadow: 0 10px 25px rgba(79, 140, 255, 0.5);
+      font-size: 16px;
+    }
+    .logo-text {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      font-size: 15px;
+      color: #e5edff;
+    }
+    .tagline {
+      font-size: 12px;
+      color: #0b1020;
+    }
+    .nav-cta {
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--muted);
+    }
+    .nav-cta strong {
+      color: var(--accent);
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
+      gap: 32px;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+    @media (max-width: 800px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+    .hero-left {
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, #1f2937 0, #020617 55%);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow-soft);
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .hero-pill span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+    }
+    .hero-title {
+      font-size: 30px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .hero-title span {
+      color: var(--accent);
+    }
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .hero-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #22c55e);
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.35);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+    .btn-ghost {
+      background: transparent;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+      padding: 9px 14px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .hero-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .hero-note span {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .hero-right {
+      padding: 18px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #111827 0, #020617 60%);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: var(--shadow-soft);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .hero-right-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .hero-right-block {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: rgba(15, 23, 42, 0.9);
+    }
+    .hero-right-block strong {
+        color: var(--text);
+    }
+    .hero-right-list {
+      margin-left: 16px;
+      margin-top: 4px;
+    }
+
+    /* SECTION WRAPPER */
+    section {
+      margin-bottom: 40px;
+    }
+    .section-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    /* PROBLEM / SOLUTION */
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 800px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 16px 60px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      font-size: 13px;
+    }
+    .card h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .card ul {
+      margin-left: 18px;
+      color: var(--muted);
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 900px) {
+      .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 600px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .feature-card {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 12px 12px;
+      font-size: 12px;
+    }
+    .feature-card h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .feature-icon {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    /* BENEFITS GRID */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 700px) {
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .benefit-card {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 12px 12px;
+      font-size: 12px;
+    }
+    .benefit-card h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 650px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pricing-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 16px 16px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .pricing-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .pricing-price {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .pricing-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .pricing-list {
+      margin-left: 16px;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+    .pricing-cta {
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    /* FAQ */
+    .faq-item {
+      background: var(--card);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .faq-q {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .faq-a {
+      color: var(--muted);
+    }
+
+    /* FOOTER CTA */
+    .footer-cta {
+      margin-top: 24px;
+      padding: 18px 16px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #1e293b, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+    .footer-cta h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .footer-cta p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .footer-cta .btn-primary {
+      box-shadow: 0 12px 30px rgba(79, 140, 255, 0.4);
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo">
+        <div class="logo-mark">AP</div>
+        <div>
+          <div class="logo-text">AP Training Simulator</div>
+          <div class="tagline">Train AP staff safely, consistently, and faster.</div>
+        </div>
+      </div>
+      <div class="pricing-cta">
+          <button class="btn-primary" onclick="window.open('https://forms.gle/YxtZHZX1L4RQLvhe6', '_blank')">
+          <strong>• Early Access Launch •</strong>
+          </button>
+      </div>
+</header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-pill">
+          <span>●</span> Built for finance & shared services teams
+        </div>
+        <h1 class="hero-title">
+          Train Accounts Payable Staff With a <span>Realistic Web‑Based Simulator</span>
+        </h1>
+        <p class="hero-subtitle">
+          Reduce onboarding time and errors by letting new hires practice AP workflows safely — without touching the live system.
+        </p>
+
+        <div class="hero-badges">
+          <div class="hero-badge">No installation • 100% browser‑based</div>
+          <div class="hero-badge">Safe dummy data • No live system access</div>
+          <div class="hero-badge">Perfect for new AP hires</div>
+        </div>
+
+        <div class="hero-cta-row">
+          <!-- Replace # with your Google Form link -->
+          <button class="btn-primary" onclick="window.open('https://forms.gle/YxtZHZX1L4RQLvhe6', '_blank')">
+            Request Early Access
+          </button>
+          <button class="btn-ghost" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
+            See how it works
+          </button>
+        </div>
+        <div class="hero-note">
+          <span>Free for early testers.</span> No contracts. No credit card. Honest feedback is the only requirement.
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-right-title">What your new AP hire experiences</div>
+        <div class="hero-right-block">
+          <strong>Guided scenario:</strong> “Process a standard invoice”
+          <ul class="hero-right-list">
+            <li>Review 3-way invoices</li>
+            <li>Deal with quantity and price mismatch</li>
+            <li>Identify fraudulent requests</li>
+            <li>Process recurring invoices </li>
+            <li>Handle   of simple exceptions</li>
+          </ul>
+        </div>
+        <div class="hero-right-block">
+          <strong>All in a safe environment:</strong><br />
+          No real vendors. No real payments. No risk to your ERP or accounting system.
+        </div>
+        <div class="hero-right-block">
+          <strong>Designed for:</strong>
+          <ul class="hero-right-list">
+            <li>Finance & AP teams</li>
+            <li>Shared services centres</li>
+            <li>Training managers</li>
+            <li>Accounting training providers & colleges</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM / SOLUTION -->
+    <section>
+      <h2 class="section-title">The Problem & The Solution</h2>
+      <p class="section-subtitle">
+        Training AP staff on live systems is risky, slow, and stressful. A simulator makes onboarding safer and more consistent.
+      </p>
+      <div class="two-col">
+        <div class="card">
+          <h3>The Problem</h3>
+          <p>
+            Training AP staff is often slow, risky, and inconsistent. New hires learn by trial‑and‑error on live systems, or by
+            shadowing busy colleagues.
+          </p>
+          <ul>
+            <li>Errors cost time, money, and credibility.</li>
+            <li>Live systems are not designed for training.</li>
+            <li>Manuals and slides are boring and quickly forgotten.</li>
+            <li>Every manager trains “their way” — no standardisation.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>The Solution</h3>
+          <p>
+            A browser‑based simulator that evaluates real AP workflows decisions/actions/reactions, using safe dummy data. New hires learn by doing, without
+            touching the live system.
+          </p>
+          <ul>
+            <li>Practice invoice processing, PO matching, approvals, and exceptions.</li>
+            <li>Repeat scenarios until confident.</li>
+            <li>Standardised workflows for every trainee.</li>
+            <li>Perfect for remote or hybrid teams.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section>
+      <h2 class="section-title">What Users Can Practice</h2>
+      <p class="section-subtitle">
+        Realistic, repeatable scenarios that mirror everyday AP work — without the risk.
+      </p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🧾</div>
+          <h4>Invoice Processing</h4>
+          <p>Practice posting, reviewing, and validating invoices through checks and decision making.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h4>PO Matching</h4>
+          <p>Match invoices to purchase orders and handle common mismatches.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💳</div>
+          <h4>Payment Approvals</h4>
+          <p>Simulate approval workflows and understand who signs off on what.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚠️</div>
+          <h4>Fraud Handling</h4>
+          <p>Identify and resolve fraudulent invoices and bank account requests before they happen in real life.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔁</div>
+          <h4>Repeatable Scenarios</h4>
+          <p>Train multiple hires with the same structured workflows and exercises.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h4>100% Browser‑Based</h4>
+          <p>No installation, no IT tickets. Runs in a standard web browser.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR / BENEFITS -->
+    <section>
+      <h2 class="section-title">Who It’s For & Why Teams Use It</h2>
+      <p class="section-subtitle">
+        Built for finance leaders who want safer, faster, and more consistent AP onboarding.
+      </p>
+      <div class="two-col">
+        <div class="card">
+          <h3>Who It’s For</h3>
+          <ul>
+            <li>Finance teams & AP departments</li>
+            <li>Shared services centres</li>
+            <li>Accounts payable managers</li>
+            <li>Training & L&amp;D managers</li>
+            <li>Accounting training providers</li>
+            <li>Business & finance colleges</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Why Teams Use It</h3>
+          <ul>
+            <li>New hires learn faster and make fewer mistakes.</li>
+            <li>Managers spend less time correcting errors.</li>
+            <li>Training becomes standardised across locations.</li>
+            <li>No risk to live systems or real data.</li>
+            <li>Ideal for remote or hybrid onboarding.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS GRID -->
+    <section>
+      <h2 class="section-title">Key Benefits</h2>
+      <p class="section-subtitle">
+        Outcomes that matter to finance leaders, not just features.
+      </p>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <h4>🚀 Faster Onboarding</h4>
+          <p>New hires learn by doing, not by reading manuals or watching slides.</p>
+        </div>
+        <div class="benefit-card">
+          <h4>🎯 Fewer Mistakes</h4>
+          <p>Practice reduces errors before they reach your live system or vendors.</p>
+        </div>
+        <div class="benefit-card">
+          <h4>📚 Standardised Training</h4>
+          <p>Every trainee follows the same structured workflows and scenarios.</p>
+        </div>
+        <div class="benefit-card">
+          <h4>🛡 Safe Environment</h4>
+          <p>Dummy data only. No access to your ERP or accounting system.</p>
+        </div>
+        <div class="benefit-card">
+          <h4>📈 Scalable</h4>
+          <p>Train one person or an entire team with the same simulator.</p>
+        </div>
+        <div class="benefit-card">
+          <h4>💼 Realistic Workflows</h4>
+          <p>Designed to mirror real‑world AP processes and edge cases.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">
+        A simple, guided experience that doesn’t require live calls or complex setup.
+      </p>
+      <div class="two-col">
+      <div class="card">
+        <ol>
+ <!---    <li>Choose a training scenario (e.g., “Process a standard invoice”).</li>
+          <li>Practice safely with realistic data and workflows.</li> --->
+          <li>Follow the on‑screen guided steps inside the simulator.</li>
+          <li>Repeat scenarios until the trainee feels confident.</li>
+          <li>Use feedback to refine training and identify weak spots.</li>
+         </ol>
+      </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section>
+      <h2 class="section-title">Simple, Flexible Pricing</h2>
+      <p class="section-subtitle">
+        Choose the option that works better for you. Try for free / Request early access. 
+      </p>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div>
+            <div class="pricing-name">Starter</div> 
+              <div class="pricing-price">Try for free / Request Early Access</div>
+              <div class="pricing-name"><s>€22.99 / month</s></div>
+            <div class="pricing-note">Up to 5 users • Ideal for small teams</div>
+            <ul class="pricing-list">
+              <li>All core scenarios</li>
+              <li>Email support</li>
+              <li>Perfect for pilot programs</li>
+              <li>Small customisation of colours available</li>
+            </ul>
+          </div>
+          <div class="pricing-cta"><button class="btn-primary" onclick="window.open('https://forms.gle/YxtZHZX1L4RQLvhe6', '_blank')">Start with a small pilot</button></div>
+        </div>
+        
+        <div class="pricing-card">
+          <div>
+            <div class="pricing-name">Team</div>
+              <div class="pricing-price">Try for free / Request Early Access</div>
+              <div class="pricing-name"><s>€79.99 / month</s></div>
+              <div class="pricing-note">Up to 20 users • Growing teams</div>
+              <ul class="pricing-list">
+              <li>All core scenarios</li>
+              <li>Priority support</li>
+              <li>Usage insights (basic)</li>
+              <li>Small customisation of design available</li>
+            </ul>
+          </div>
+          <div class="pricing-cta"><button class="btn-primary" onclick="window.open('https://forms.gle/YxtZHZX1L4RQLvhe6', '_blank')">Scale to your AP team</button></div>
+        </div>
+
+          <div class="pricing-card">
+          <div>
+            <div class="pricing-name">Enterprise</div>
+            <div class="pricing-price">Custom</div>
+            <div class="pricing-note">Unlimited users • Custom workflows</div>
+            <ul class="pricing-list">
+              <li>Custom scenarios</li>
+              <li>Dedicated support</li>
+              <li>Onboarding assistance</li>
+            </ul>
+          </div>
+              <div class="pricing-cta"><button class="btn-primary" onclick="window.open('https://forms.gle/YxtZHZX1L4RQLvhe6', '_blank')">Talk about your requirements</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2 class="section-title">FAQ</h2>
+      <p class="section-subtitle">
+        Short, honest answers to the questions finance and AP leaders actually ask.
+      </p>
+        <div class="two-col">
+        <div class="faq-item">
+        <div class="faq-q">Do we need to install anything?</div>
+        <div class="faq-a">No. The simulator runs entirely in a web browser. No installation, no IT tickets.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Does this connect to our live AP system?</div>
+        <div class="faq-a">
+          No. The simulator uses dummy data only. It does not connect to your ERP or accounting system.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can we train multiple people at once?</div>
+        <div class="faq-a">
+          Yes. You can onboard multiple new hires using the same scenarios and workflows.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do you offer custom scenarios?</div>
+        <div class="faq-a">
+          Yes. For larger teams, we can design custom workflows that match your specific AP processes.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can we try it before paying?</div>
+        <div class="faq-a">
+          Yes. Early access includes a free pilot period in exchange for honest feedback.
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- ABOUT / CONTACT -->
+    <section>
+      <h2 class="section-title">About the Creator</h2>
+      <div class="card">
+        <p>
+            I built this simulator after seeing how difficult and stressful it is to train new AP staff using live systems.
+            My goal is to make AP onboarding faster, safer, and more consistent — without requiring expensive software or risky training environments.
+        </p>
+        <h4>If you’d like to test the simulator or share feedback, feel free to reach out.</h4>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Contact</h2>
+      <div class="card">
+        <p>📧 Email: <em>ap.simulator@zohomail.eu</em></p>
+        <p>💼 LinkedIn: <em>https://www.linkedin.com/services/page/9966a6341ba095139b/</em></p>
+      </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <div class="footer-cta">
+      <h2>Ready to see how AP training can feel less risky?</h2>
+      <p>
+        Share the simulator with 1–2 new hires, let them practice for a week, and see how much smoother onboarding feels.
+      </p>
+      <!-- Replace # with your Google Form link -->
+      <button class="btn-primary" onclick="window.open('#', '_blank')">
+        Request Early Access
+      </button>
+    </div>
+
+    <footer>
+      •  AP Training Simulator •
+    </footer>
+  </div>
+</body>
+</html>
